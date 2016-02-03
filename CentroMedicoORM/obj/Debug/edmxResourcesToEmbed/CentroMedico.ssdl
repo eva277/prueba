@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CentroMedicoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Citas">
+    <Key>
+      <PropertyRef Name="usuario" />
+      <PropertyRef Name="medico" />
+      <PropertyRef Name="fecha" />
+    </Key>
+    <Property Name="usuario" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="medico" Type="varchar" MaxLength="8" Nullable="false" />
+    <Property Name="hora" Type="varchar" MaxLength="5" Nullable="false" />
+    <Property Name="fecha" Type="varchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Especialidades">
+    <Key>
+      <PropertyRef Name="idEspecialidad" />
+    </Key>
+    <Property Name="idEspecialidad" Type="varchar" MaxLength="8" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="20" />
+    <Property Name="descripcion" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="Historiales">
+    <Key>
+      <PropertyRef Name="idHistoria" />
+    </Key>
+    <Property Name="idHistoria" Type="int" Nullable="false" />
+    <Property Name="usuario" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="medico" Type="varchar" MaxLength="8" Nullable="false" />
+    <Property Name="sintomas" Type="varchar" MaxLength="200" />
+    <Property Name="diagnostico" Type="varchar" MaxLength="200" />
+    <Property Name="tratamiento" Type="varchar" MaxLength="200" />
+    <Property Name="fecha" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Horarios">
+    <Key>
+      <PropertyRef Name="Medico" />
+      <PropertyRef Name="diaSemana" />
+    </Key>
+    <Property Name="Medico" Type="varchar" MaxLength="8" Nullable="false" />
+    <Property Name="horaInic" Type="varchar" MaxLength="5" Nullable="false" />
+    <Property Name="horaFin" Type="varchar" MaxLength="5" Nullable="false" />
+    <Property Name="diaSemana" Type="varchar" MaxLength="9" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Medicos">
+    <Key>
+      <PropertyRef Name="idMedico" />
+    </Key>
+    <Property Name="idMedico" Type="varchar" MaxLength="8" Nullable="false" />
+    <Property Name="servicio" Type="varchar" MaxLength="8" />
+    <Property Name="especialidad" Type="varchar" MaxLength="8" />
+    <Property Name="nombre" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="apellidos" Type="varchar" MaxLength="30" />
+    <Property Name="telefono" Type="varchar" MaxLength="12" />
+    <Property Name="dni" Type="varchar" MaxLength="9" />
+  </EntityType>
+  <EntityType Name="ServicioMedico">
+    <Key>
+      <PropertyRef Name="idServicio" />
+    </Key>
+    <Property Name="idServicio" Type="varchar" MaxLength="8" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="descripcion" Type="varchar" MaxLength="80" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="Usuarios">
+    <Key>
+      <PropertyRef Name="NssUsuario" />
+    </Key>
+    <Property Name="NssUsuario" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="apellidos" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="contrasena" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="direccion" Type="varchar" MaxLength="30" />
+    <Property Name="localidad" Type="varchar" MaxLength="20" />
+    <Property Name="telefono" Type="varchar" MaxLength="12" />
+    <Property Name="dni" Type="char" MaxLength="9" />
+    <Property Name="email" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK__Citas__medico__1BFD2C07">
+    <End Role="Medicos" Type="Self.Medicos" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Citas" Type="Self.Citas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Medicos">
+        <PropertyRef Name="idMedico" />
+      </Principal>
+      <Dependent Role="Citas">
+        <PropertyRef Name="medico" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Citas__usuario__1B0907CE">
+    <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Citas" Type="Self.Citas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuarios">
+        <PropertyRef Name="NssUsuario" />
+      </Principal>
+      <Dependent Role="Citas">
+        <PropertyRef Name="usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Historial__medic__1FCDBCEB">
+    <End Role="Medicos" Type="Self.Medicos" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Historiales" Type="Self.Historiales" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Medicos">
+        <PropertyRef Name="idMedico" />
+      </Principal>
+      <Dependent Role="Historiales">
+        <PropertyRef Name="medico" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Historial__usuar__1ED998B2">
+    <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Historiales" Type="Self.Historiales" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuarios">
+        <PropertyRef Name="NssUsuario" />
+      </Principal>
+      <Dependent Role="Historiales">
+        <PropertyRef Name="usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Horarios__Medico__22AA2996">
+    <End Role="Medicos" Type="Self.Medicos" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Horarios" Type="Self.Horarios" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Medicos">
+        <PropertyRef Name="idMedico" />
+      </Principal>
+      <Dependent Role="Horarios">
+        <PropertyRef Name="Medico" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Medicos__especia__182C9B23">
+    <End Role="Especialidades" Type="Self.Especialidades" Multiplicity="0..1" />
+    <End Role="Medicos" Type="Self.Medicos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Especialidades">
+        <PropertyRef Name="idEspecialidad" />
+      </Principal>
+      <Dependent Role="Medicos">
+        <PropertyRef Name="especialidad" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Medicos__servici__173876EA">
+    <End Role="ServicioMedico" Type="Self.ServicioMedico" Multiplicity="0..1" />
+    <End Role="Medicos" Type="Self.Medicos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ServicioMedico">
+        <PropertyRef Name="idServicio" />
+      </Principal>
+      <Dependent Role="Medicos">
+        <PropertyRef Name="servicio" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="CentroMedicoModelStoreContainer">
+    <EntitySet Name="Citas" EntityType="Self.Citas" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Especialidades" EntityType="Self.Especialidades" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Historiales" EntityType="Self.Historiales" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Horarios" EntityType="Self.Horarios" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Medicos" EntityType="Self.Medicos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ServicioMedico" EntityType="Self.ServicioMedico" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Citas__medico__1BFD2C07" Association="Self.FK__Citas__medico__1BFD2C07">
+      <End Role="Medicos" EntitySet="Medicos" />
+      <End Role="Citas" EntitySet="Citas" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Citas__usuario__1B0907CE" Association="Self.FK__Citas__usuario__1B0907CE">
+      <End Role="Usuarios" EntitySet="Usuarios" />
+      <End Role="Citas" EntitySet="Citas" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Historial__medic__1FCDBCEB" Association="Self.FK__Historial__medic__1FCDBCEB">
+      <End Role="Medicos" EntitySet="Medicos" />
+      <End Role="Historiales" EntitySet="Historiales" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Historial__usuar__1ED998B2" Association="Self.FK__Historial__usuar__1ED998B2">
+      <End Role="Usuarios" EntitySet="Usuarios" />
+      <End Role="Historiales" EntitySet="Historiales" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Horarios__Medico__22AA2996" Association="Self.FK__Horarios__Medico__22AA2996">
+      <End Role="Medicos" EntitySet="Medicos" />
+      <End Role="Horarios" EntitySet="Horarios" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Medicos__especia__182C9B23" Association="Self.FK__Medicos__especia__182C9B23">
+      <End Role="Especialidades" EntitySet="Especialidades" />
+      <End Role="Medicos" EntitySet="Medicos" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Medicos__servici__173876EA" Association="Self.FK__Medicos__servici__173876EA">
+      <End Role="ServicioMedico" EntitySet="ServicioMedico" />
+      <End Role="Medicos" EntitySet="Medicos" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
